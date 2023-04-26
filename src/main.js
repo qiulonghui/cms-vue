@@ -22,7 +22,7 @@ import 'element-plus/dist/index.css'
 import '@/assets/style/realize/element-variable.scss'
 
 const app = createApp(App)
-
+console.log(12121)
 app.use(store)
 app.use(router)
 app.use(ElementPlus, { locale })
