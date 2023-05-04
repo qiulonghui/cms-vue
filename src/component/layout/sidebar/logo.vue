@@ -1,5 +1,5 @@
 <template>
-  <div :class="!elMenuCollapse ? 'logo' : 'mobile-logo'">
+  <div v-show="!elMenuCollapse" :class="!elMenuCollapse ? 'logo' : 'mobile-logo'">
     <img :src="!elMenuCollapse ? logo : mobileLogo" alt="logo" />
   </div>
 </template>

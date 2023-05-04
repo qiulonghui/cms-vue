@@ -2,11 +2,12 @@ import Utils from '@/lin/util/util'
 import adminConfig from './admin'
 import bookConfig from './book' // 引入图书管理路由文件
 import pluginsConfig from './plugin'
+import repairOrder from './repairOrder'
 
 // eslint-disable-next-line import/no-mutable-exports
 let homeRouter = [
   {
-    title: '林间有风',
+    title: '首页',
     type: 'view',
     name: Symbol('about'),
     route: '/about',
@@ -45,6 +46,7 @@ let homeRouter = [
     icon: 'iconfont icon-rizhiguanli',
   },
   bookConfig,
+  repairOrder,
   adminConfig,
 ]
 
@@ -54,8 +56,8 @@ let homeRouter = [
 // homeRouter = homeRouter.concat(plugins)
 
 // 处理顺序
-// homeRouter = Utils.sortByOrder(homeRouter)
-// deepReduceName(homeRouter)
+homeRouter = Utils.sortByOrder(homeRouter)
+deepReduceName(homeRouter)
 
 export default homeRouter
 
@@ -84,29 +86,29 @@ export default homeRouter
 /**
  * 使用 Symbol 处理 name 字段, 保证唯一性
  */
-// function deepReduceName(target) {
-//   if (Array.isArray(target)) {
-//     target.forEach(item => {
-//       if (typeof item !== 'object') {
-//         return
-//       }
-//       deepReduceName(item)
-//     })
-//     return
-//   }
-//   if (typeof target === 'object') {
-//     if (typeof target.name !== 'symbol') {
-//       target.name = target.name || Utils.getRandomStr()
-//       target.name = Symbol(target.name)
-//     }
+function deepReduceName(target) {
+  if (Array.isArray(target)) {
+    target.forEach(item => {
+      if (typeof item !== 'object') {
+        return
+      }
+      deepReduceName(item)
+    })
+    return
+  }
+  if (typeof target === 'object') {
+    if (typeof target.name !== 'symbol') {
+      target.name = target.name || Utils.getRandomStr()
+      target.name = Symbol(target.name)
+    }
 
-//     if (Array.isArray(target.children)) {
-//       target.children.forEach(item => {
-//         if (typeof item !== 'object') {
-//           return
-//         }
-//         deepReduceName(item)
-//       })
-//     }
-//   }
-// }
+    if (Array.isArray(target.children)) {
+      target.children.forEach(item => {
+        if (typeof item !== 'object') {
+          return
+        }
+        deepReduceName(item)
+      })
+    }
+  }
+}

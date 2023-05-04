@@ -16,6 +16,7 @@ const bookRouter = {
       filePath: 'view/book/book-list.vue',
       inNav: true,
       icon: 'iconfont icon-tushuguanli',
+      permission: ['查询图书列表'],
     },
     {
       title: '添加图书',
@@ -25,6 +26,7 @@ const bookRouter = {
       filePath: 'view/book/book.vue',
       inNav: true,
       icon: 'iconfont icon-add',
+      permission: ['添加图书'],
     },
   ],
 }
