@@ -7,9 +7,14 @@
       </div>
       <!-- 表格 -->
       <el-table :data="books" v-loading="loading">
-        <el-table-column type="index" :index="indexMethod" label="序号" width="100"></el-table-column>
-        <el-table-column prop="title" label="书名"></el-table-column>
-        <el-table-column prop="author" label="作者"></el-table-column>
+        <el-table-column prop="id"  label="维修单号" width="100"></el-table-column>
+        <el-table-column prop="name"  label="报修人"></el-table-column>
+        <el-table-column prop="phone"  label="报修人电话"></el-table-column>
+        <el-table-column prop="depart" label="报修科室"></el-table-column>
+        <el-table-column prop="address" label="维修地点"></el-table-column>
+        <el-table-column prop="desc" label="报修说明备注"></el-table-column>
+        <el-table-column prop="createTime" label="创建时间"></el-table-column>
+        <el-table-column prop="creater" label="创建人"></el-table-column>
         <el-table-column label="操作" fixed="right" width="275">
           <template #default="scope">
             <el-button plain size="small" type="primary" @click="handleEdit(scope.row.id)">编辑</el-button>
@@ -19,8 +24,7 @@
               type="danger"
               @click="handleDelete(scope.row.id)"
               v-permission="{ permission: '删除图书', type: 'disabled' }"
-              >删除</el-button
-            >
+              >删除</el-button>
           </template>
         </el-table-column>
       </el-table>

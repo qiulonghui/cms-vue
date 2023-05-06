@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="title" v-if="!editBookId">新建维修工单</div>
+    <div class="title" v-if="!editId">新建维修工单</div>
     <div class="title" v-else>
       <span>编辑维修工单</span> <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
     </div>
@@ -8,22 +8,25 @@
     <div class="wrap">
       <el-row>
         <el-col :lg="16" :md="20" :sm="24" :xs="24">
-          <el-form :model="book" status-icon ref="form" label-width="100px" @submit.prevent :rules="rules">
-            <el-form-item label="书名" prop="title">
-              <el-input v-model="book.title" placeholder="请填写书名"></el-input>
+          <el-form :model="form" status-icon ref="formRef" label-width="100px" @submit.prevent :rules="rules">
+            <el-form-item label="报修人" prop="name">
+              <el-input v-model="form.title" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="作者" prop="author">
-              <el-input v-model="book.author" placeholder="请填写作者"></el-input>
+            <el-form-item label="报修人电话" prop="phone">
+              <el-input  v-model="form.phone" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="封面" prop="image">
-              <el-input v-model="book.image" placeholder="请填写封面地址"></el-input>
+            <el-form-item label="报修科室" prop="depart">
+              <el-input v-model="form.depart" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="简介" prop="summary">
+            <el-form-item label="维修地点" prop="address">
+              <el-input v-model="form.address" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="说明备注" prop="desc">
               <el-input
                 type="textarea"
                 :autosize="{ minRows: 4, maxRows: 8 }"
-                placeholder="请输入简介"
-                v-model="book.summary"
+                placeholder="请输入"
+                v-model="form.desc"
               >
               </el-input>
             </el-form-item>
@@ -46,15 +49,15 @@ import bookModel from '@/model/book'
 
 export default {
   props: {
-    editBookId: {
+    editId: {
       type: Number,
       default: null,
     },
   },
   setup(props, context) {
-    const form = ref(null)
+    const formRef = ref(null)
     const loading = ref(false)
-    const book = reactive({ title: '', author: '', summary: '', image: '' })
+    const form = reactive({ name: '', phone: '', depart: '', address: '', desc: '' })
 
     const listAssign = (a, b) => Object.keys(a).forEach(key => {
       a[key] = b[key] || a[key]
@@ -66,32 +69,32 @@ export default {
     const { rules } = getRules()
 
     onMounted(() => {
-      if (props.editBookId) {
+      if (props.editId) {
         getBook()
       }
     })
 
     const getBook = async () => {
       loading.value = true
-      const res = await bookModel.getBook(props.editBookId)
-      listAssign(book, res)
+      const res = await bookModel.getBook(props.editId)
+      listAssign(form, res)
       loading.value = false
     }
 
     // 重置表单
     const resetForm = () => {
-      form.value.resetFields()
+      formRef.value.resetFields()
     }
 
     const submitForm = async formName => {
-      form.value.validate(async valid => {
+      formRef.value.validate(async valid => {
         if (valid) {
           let res = {}
-          if (props.editBookId) {
-            res = await bookModel.editBook(props.editBookId, book)
+          if (props.editId) {
+            res = await bookModel.editBook(props.editId, form)
             context.emit('editClose')
           } else {
-            res = await bookModel.createBook(book)
+            res = await bookModel.createBook(form)
             resetForm(formName)
           }
           if (res.code < window.MAX_SUCCESS_CODE) {
@@ -110,8 +113,8 @@ export default {
 
     return {
       back,
-      book,
       form,
+      formRef,
       rules,
       resetForm,
       submitForm,
@@ -133,10 +136,11 @@ function getRules() {
     callback()
   }
   const rules = {
-    title: [{ validator: checkInfo, trigger: 'blur', required: true }],
-    author: [{ validator: checkInfo, trigger: 'blur', required: true }],
-    summary: [{ validator: checkInfo, trigger: 'blur', required: true }],
-    image: [{ validator: checkInfo, trigger: 'blur', required: true }],
+    name: [{ validator: checkInfo, trigger: 'blur', required: true }],
+    phone: [{ validator: checkInfo, trigger: 'blur', required: true }],
+    depart: [{ validator: checkInfo, trigger: 'blur', required: true }],
+    address: [{ validator: checkInfo, trigger: 'blur', required: true }],
+    desc: [{ validator: checkInfo, trigger: 'blur', required: true }],
   }
   return { rules }
 }

@@ -45,7 +45,7 @@ let homeRouter = [
     inNav: false,
     icon: 'iconfont icon-rizhiguanli',
   },
-  bookConfig,
+  // bookConfig,
   repairOrder,
   adminConfig,
 ]
