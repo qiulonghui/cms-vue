@@ -10,10 +10,10 @@
         <el-col :lg="16" :md="20" :sm="24" :xs="24">
           <el-form :model="form" status-icon ref="formRef" label-width="100px" @submit.prevent :rules="rules">
             <el-form-item label="报修人" prop="name">
-              <el-input v-model="form.title" placeholder="请输入"></el-input>
+              <el-input v-model="form.name" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="报修人电话" prop="phone">
-              <el-input  v-model="form.phone" placeholder="请输入"></el-input>
+              <el-input v-model="form.phone" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="报修科室" prop="depart">
               <el-input v-model="form.depart" placeholder="请输入"></el-input>
@@ -22,12 +22,7 @@
               <el-input v-model="form.address" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="说明备注" prop="desc">
-              <el-input
-                type="textarea"
-                :autosize="{ minRows: 4, maxRows: 8 }"
-                placeholder="请输入"
-                v-model="form.desc"
-              >
+              <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 8 }" placeholder="请输入" v-model="form.desc">
               </el-input>
             </el-form-item>
 
@@ -45,7 +40,7 @@
 <script>
 import { reactive, ref, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
-import bookModel from '@/model/book'
+import orderRepairApi from '@/model/order-repair'
 
 export default {
   props: {
@@ -70,13 +65,13 @@ export default {
 
     onMounted(() => {
       if (props.editId) {
-        getBook()
+        getOrder()
       }
     })
 
-    const getBook = async () => {
+    const getOrder = async () => {
       loading.value = true
-      const res = await bookModel.getBook(props.editId)
+      const res = await orderRepairApi.getOrder(props.editId)
       listAssign(form, res)
       loading.value = false
     }
@@ -91,10 +86,10 @@ export default {
         if (valid) {
           let res = {}
           if (props.editId) {
-            res = await bookModel.editBook(props.editId, form)
+            res = await orderRepairApi.editOrder(props.editId, form)
             context.emit('editClose')
           } else {
-            res = await bookModel.createBook(form)
+            res = await orderRepairApi.createOrder(form)
             resetForm(formName)
           }
           if (res.code < window.MAX_SUCCESS_CODE) {

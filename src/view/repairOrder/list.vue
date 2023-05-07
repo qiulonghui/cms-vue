@@ -7,13 +7,13 @@
       </div>
       <!-- 表格 -->
       <el-table :data="books" v-loading="loading">
-        <el-table-column prop="id"  label="维修单号" width="100"></el-table-column>
-        <el-table-column prop="name"  label="报修人"></el-table-column>
-        <el-table-column prop="phone"  label="报修人电话"></el-table-column>
+        <el-table-column prop="id" label="维修单号" width="100"></el-table-column>
+        <el-table-column prop="name" label="报修人"></el-table-column>
+        <el-table-column prop="phone" label="报修人电话"></el-table-column>
         <el-table-column prop="depart" label="报修科室"></el-table-column>
         <el-table-column prop="address" label="维修地点"></el-table-column>
         <el-table-column prop="desc" label="报修说明备注"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间"></el-table-column>
+        <el-table-column prop="createTime" label="创建时间" show-overflow-tooltip></el-table-column>
         <el-table-column prop="creater" label="创建人"></el-table-column>
         <el-table-column label="操作" fixed="right" width="275">
           <template #default="scope">
@@ -23,42 +23,43 @@
               size="small"
               type="danger"
               @click="handleDelete(scope.row.id)"
-              v-permission="{ permission: '删除图书', type: 'disabled' }"
-              >删除</el-button>
+              v-permission="{ permission: '删除维修工单', type: 'disabled' }"
+              >删除</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
     </div>
 
     <!-- 编辑页面 -->
-    <book-modify v-else @editClose="editClose" :editBookId="editBookId"></book-modify>
+    <OrderRepairModify v-else @editClose="editClose" :editId="editId"></OrderRepairModify>
   </div>
 </template>
 
 <script>
 import { onMounted, ref } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
-import bookModel from '@/model/book'
-import BookModify from './repairOrder'
+import orderRepairApi from '@/model/order-repair'
+import OrderRepairModify from './repairOrder'
 
 export default {
   components: {
-    BookModify,
+    OrderRepairModify,
   },
   setup() {
     const books = ref([])
-    const editBookId = ref(1)
+    const editId = ref(1)
     const loading = ref(false)
     const showEdit = ref(false)
 
     onMounted(() => {
-      getBooks()
+      getOrders()
     })
 
-    const getBooks = async () => {
+    const getOrders = async () => {
       try {
         loading.value = true
-        books.value = await bookModel.getBooks()
+        books.value = await orderRepairApi.getOrders()
         loading.value = false
       } catch (error) {
         loading.value = false
@@ -70,7 +71,7 @@ export default {
 
     const handleEdit = id => {
       showEdit.value = true
-      editBookId.value = id
+      editId.value = id
     }
 
     const handleDelete = id => {
@@ -79,9 +80,9 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        const res = await bookModel.deleteBook(id)
+        const res = await orderRepairApi.deleteBook(id)
         if (res.code < window.MAX_SUCCESS_CODE) {
-          getBooks()
+          getOrders()
           ElMessage.success(`${res.message}`)
         }
       })
@@ -89,7 +90,7 @@ export default {
 
     const editClose = () => {
       showEdit.value = false
-      getBooks()
+      getOrders()
     }
 
     const indexMethod = index => index + 1
@@ -100,7 +101,7 @@ export default {
       showEdit,
       editClose,
       handleEdit,
-      editBookId,
+      editId,
       indexMethod,
       handleDelete,
     }
