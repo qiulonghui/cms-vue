@@ -52,7 +52,7 @@ export default class User {
   static async getInformation() {
     const info = await get('cms/user/information')
     const storeUser = store.getters.user === null ? {} : store.getters.user
-    return Object.assign({ ...storeUser }, info)
+    return { ...storeUser, ...info }
   }
 
   /**
@@ -61,7 +61,7 @@ export default class User {
   static async getPermissions() {
     const info = await get('cms/user/permissions')
     const storeUser = store.getters.user === null ? {} : store.getters.user
-    return Object.assign({ ...storeUser }, info)
+    return { ...storeUser, ...info }
   }
 
   /**

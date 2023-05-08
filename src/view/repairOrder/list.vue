@@ -6,14 +6,18 @@
         <div class="title">维修工单列表</div>
       </div>
       <!-- 表格 -->
-      <el-table :data="books" v-loading="loading">
+      <el-table :data="orders" v-loading="loading">
         <el-table-column prop="id" label="维修单号" width="100"></el-table-column>
         <el-table-column prop="name" label="报修人"></el-table-column>
         <el-table-column prop="phone" label="报修人电话"></el-table-column>
         <el-table-column prop="depart" label="报修科室"></el-table-column>
         <el-table-column prop="address" label="维修地点"></el-table-column>
-        <el-table-column prop="desc" label="报修说明备注" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="state" label="状态" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="desc" label="问题说明" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="state" label="状态" show-overflow-tooltip>
+          <template #default="scope">
+            {{ stateMap[scope.row.state] }}
+          </template>
+        </el-table-column>
         <el-table-column prop="createTime" label="创建时间" show-overflow-tooltip></el-table-column>
         <el-table-column prop="creater" label="创建人"></el-table-column>
         <el-table-column label="操作" fixed="right" width="275">
@@ -30,6 +34,18 @@
           </template>
         </el-table-column>
       </el-table>
+      <!-- 分页 -->
+      <div class="pagination">
+        <el-pagination
+          :total="totalNum"
+          :background="true"
+          :page-size="pageCount"
+          :current-page="currentPage"
+          layout="prev, pager, next, jumper"
+          @current-change="handleCurrentChange"
+        >
+        </el-pagination>
+      </div>
     </div>
 
     <!-- 编辑页面 -->
@@ -42,16 +58,20 @@ import { onMounted, ref } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import orderRepairApi from '@/model/order-repair'
 import OrderRepairModify from './repairOrder'
+import stateMap from './constants'
 
 export default {
   components: {
     OrderRepairModify,
   },
   setup() {
-    const books = ref([])
+    const orders = ref([])
     const editId = ref(1)
     const loading = ref(false)
     const showEdit = ref(false)
+    const pageCount = ref(10) // 每页10条数据
+    const totalNum = ref(0) // 分组内的用户总数
+    const currentPage = ref(1) // 默认获取第一页的数据
 
     onMounted(() => {
       getOrders()
@@ -60,12 +80,19 @@ export default {
     const getOrders = async () => {
       try {
         loading.value = true
-        books.value = await orderRepairApi.getOrders()
+        const { items, total } = await orderRepairApi.getOrders(
+          {
+            count: pageCount.value,
+            page: currentPage.value,
+          }
+        )
+        orders.value = items
+        totalNum.value = total
         loading.value = false
       } catch (error) {
         loading.value = false
         if (error.code === 10020) {
-          books.value = []
+          orders.value = []
         }
       }
     }
@@ -94,17 +121,24 @@ export default {
       getOrders()
     }
 
-    const indexMethod = index => index + 1
+    const handleCurrentChange = async val => {
+      currentPage.value = val
+      await getOrders()
+    }
 
     return {
-      books,
+      orders,
       loading,
       showEdit,
       editClose,
       handleEdit,
       editId,
-      indexMethod,
       handleDelete,
+      stateMap,
+      pageCount,
+      totalNum,
+      currentPage,
+      handleCurrentChange
     }
   },
 }
