@@ -2,7 +2,11 @@
   <div class="container">
     <div class="title" v-if="!editId">新建维修工单</div>
     <div class="title" v-else>
-      <span>编辑维修工单</span> <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
+      <span
+        >编辑维修工单
+        <el-button type="primary" @click="dialogVisible = true">修改工单状态</el-button></span
+      >
+      <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
     </div>
 
     <div class="wrap">
@@ -21,7 +25,7 @@
             <el-form-item label="维修地点" prop="address">
               <el-input v-model="form.address" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="说明备注" prop="desc">
+            <el-form-item label="问题说明" prop="desc">
               <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 8 }" placeholder="请输入" v-model="form.desc">
               </el-input>
             </el-form-item>
@@ -34,6 +38,30 @@
         </el-col>
       </el-row>
     </div>
+
+    <!-- 弹窗 -->
+    <el-dialog
+      title="修改工单状态"
+      :append-to-body="true"
+      :before-close="handleClose"
+      v-model="dialogVisible"
+    >
+      <el-form ref="stateformRef" :model="stateform" label-width="80px">
+        <el-form-item label="状态" prop="state">
+          <el-radio-group clearable v-model="stateform.state">
+            <el-radio label="pending">待处理</el-radio>
+            <el-radio label="processing">处理中</el-radio>
+            <el-radio label="completed">已完工</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -52,8 +80,9 @@ export default {
   setup(props, context) {
     const formRef = ref(null)
     const loading = ref(false)
+    const stateform = reactive({ state: '' })
+    const dialogVisible = ref(false)
     const form = reactive({ name: '', phone: '', depart: '', address: '', desc: '' })
-
     const listAssign = (a, b) => Object.keys(a).forEach(key => {
       a[key] = b[key] || a[key]
     })
@@ -73,6 +102,7 @@ export default {
       loading.value = true
       const res = await orderRepairApi.getOrder(props.editId)
       listAssign(form, res)
+      listAssign(stateform, res)
       loading.value = false
     }
 
@@ -102,6 +132,11 @@ export default {
       })
     }
 
+    const handleClose = () => {
+      stateform.state = 'pending'
+      dialogVisible.value = false
+    }
+
     const back = () => {
       context.emit('editClose')
     }
@@ -113,6 +148,9 @@ export default {
       rules,
       resetForm,
       submitForm,
+      dialogVisible,
+      stateform,
+      handleClose
     }
   },
 }
