@@ -80,12 +80,10 @@ export default {
     const getOrders = async () => {
       try {
         loading.value = true
-        const { items, total } = await orderRepairApi.getOrders(
-          {
-            count: pageCount.value,
-            page: currentPage.value,
-          }
-        )
+        const { items, total } = await orderRepairApi.getOrders({
+          count: pageCount.value,
+          page: currentPage.value,
+        })
         orders.value = items
         totalNum.value = total
         loading.value = false
@@ -138,7 +136,7 @@ export default {
       pageCount,
       totalNum,
       currentPage,
-      handleCurrentChange
+      handleCurrentChange,
     }
   },
 }

@@ -32,15 +32,12 @@ class OrderRepair {
     return res
   }
 
-  async getOrders({
-    count,
-    page
-  }) {
+  async getOrders({ count, page }) {
     const data = { count, page }
     return _axios({
       method: 'get',
       url: 'v1/orderRepair',
-      params: data
+      params: data,
     })
   }
 }

@@ -2,10 +2,7 @@
   <div class="container">
     <div class="title" v-if="!editId">新建维修工单</div>
     <div class="title" v-else>
-      <span
-        >编辑维修工单
-        <el-button type="primary" @click="dialogVisible = true">修改工单状态</el-button></span
-      >
+      <span>编辑维修工单 <el-button type="primary" @click="dialogVisible = true">修改工单状态</el-button></span>
       <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
     </div>
 
@@ -40,12 +37,7 @@
     </div>
 
     <!-- 弹窗 -->
-    <el-dialog
-      title="修改工单状态"
-      :append-to-body="true"
-      :before-close="handleClose"
-      v-model="dialogVisible"
-    >
+    <el-dialog title="修改工单状态" :append-to-body="true" :before-close="handleClose" v-model="dialogVisible">
       <el-form ref="stateformRef" :model="stateform" label-width="80px">
         <el-form-item label="状态" prop="state">
           <el-radio-group clearable v-model="stateform.state">
@@ -150,7 +142,7 @@ export default {
       submitForm,
       dialogVisible,
       stateform,
-      handleClose
+      handleClose,
     }
   },
 }
