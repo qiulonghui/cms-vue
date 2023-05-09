@@ -32,7 +32,6 @@
             <slot :row="msg">
               <p :class="msg[props.is_read] ? 'read-messages' : 'unread-messages'">{{ msg[props.content] }}</p>
               <div class="sketchynformation">
-                <p class="user">{{ msg[props.user] }}</p>
                 <p class="date-time">{{ msg[props.time] }}</p>
               </div>
             </slot>
@@ -99,7 +98,9 @@ export default {
   emits: ['readMessages', 'readAll', 'viewAll'],
   methods: {
     readMessages(msg, index) {
-      this.$emit('readMessages', msg, index)
+      if (!msg.is_read) {
+        this.$emit('readMessages', msg, index)
+      }
     },
     readAll() {
       this.$emit('readAll')

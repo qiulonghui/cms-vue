@@ -41,7 +41,7 @@
           :background="true"
           :page-size="pageCount"
           :current-page="currentPage"
-          layout="prev, pager, next, jumper"
+          layout="total,prev, pager, next, jumper"
           @current-change="handleCurrentChange"
         >
         </el-pagination>
@@ -106,7 +106,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        const res = await orderRepairApi.deleteBook(id)
+        const res = await orderRepairApi.deleteOrder(id)
         if (res.code < window.MAX_SUCCESS_CODE) {
           getOrders()
           ElMessage.success(`${res.message}`)

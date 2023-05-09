@@ -19,7 +19,7 @@ export default class User {
         group_ids: user.groupIds,
         confirm_password: user.confirmPassword,
       },
-      handleError: true,
+      handleError: false,
     })
   }
 

@@ -168,7 +168,7 @@ function getRules() {
     callback()
   }
   const rules = {
-    name: [{ validator: checkInfo, trigger: 'blur', required: true }],
+    name: [{ validator: checkInfo, trigger: ['blur'], required: true }],
     phone: [{ validator: checkInfo, trigger: 'blur', required: true }],
     depart: [{ validator: checkInfo, trigger: 'blur', required: true }],
     address: [{ validator: checkInfo, trigger: 'blur', required: true }],

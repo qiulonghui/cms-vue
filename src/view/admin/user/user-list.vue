@@ -26,7 +26,7 @@
         :page-size="pageCount"
         v-if="refreshPagination"
         :current-page="currentPage"
-        layout="prev, pager, next, jumper"
+        layout="total, prev, pager, next, jumper"
         @current-change="handleCurrentChange"
       >
       </el-pagination>

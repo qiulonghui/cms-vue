@@ -26,7 +26,7 @@ import store from '@/store'
 import Config from '@/config'
 import { getToken } from '@/lin/util/token'
 import User from './user'
-import ClearTab from './clear-tab'
+// import ClearTab from './clear-tab'
 import Breadcrumb from './breadcrumb'
 import Screenfull from './screen-full'
 
@@ -46,6 +46,8 @@ export default {
       this.$options.sockets.onmessage = data => {
         console.log(JSON.parse(data.data))
         this.messages.push(JSON.parse(data.data))
+        console.log(this.messages)
+        this.value = this.messages.length
       }
       this.$options.sockets.onerror = err => {
         console.error(err)
@@ -57,16 +59,16 @@ export default {
     }
   },
   watch: {
-    messages: {
-      handler() {
-        this.value = this.messages.filter(msg => msg.is_read === false).length
-        if (this.value === 0) {
-          this.hidden = true
-        } else {
-          this.hidden = false
-        }
-      },
-      immediate: true,
+    messages() {
+      // console.log(this.messages)
+      this.value = this.messages.filter(msg => msg.is_read === false).length
+      // this.value = this.messages.length
+      console.log('aaa', this.messages, this.value)
+      if (this.value === 0) {
+        this.hidden = true
+      } else {
+        this.hidden = false
+      }
     },
   },
   methods: {
@@ -78,13 +80,14 @@ export default {
     },
     readMessages(msg, index) {
       this.messages[index].is_read = true
+      this.value--
     },
   },
   components: {
     Breadcrumb,
     User,
     Screenfull,
-    ClearTab,
+    // ClearTab,
   },
 }
 </script>

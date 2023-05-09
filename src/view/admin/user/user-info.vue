@@ -112,7 +112,6 @@ export default {
               }
             } catch (e) {
               loading.value = false
-              ElMessage.error('新增用户失败')
             }
           } else {
             // 2. 更新用户信息

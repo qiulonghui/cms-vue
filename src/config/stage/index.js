@@ -1,7 +1,7 @@
 import Utils from '@/lin/util/util'
 import adminConfig from './admin'
-import bookConfig from './book' // 引入图书管理路由文件
-import pluginsConfig from './plugin'
+// import bookConfig from './book' // 引入图书管理路由文件
+// import pluginsConfig from './plugin'
 import repairOrder from './repairOrder'
 
 // eslint-disable-next-line import/no-mutable-exports
@@ -15,17 +15,6 @@ let homeRouter = [
     inNav: true,
     icon: 'iconfont icon-iconset0103',
     order: 1,
-  },
-  {
-    title: '日志管理',
-    type: 'view',
-    name: Symbol('log'),
-    route: '/log',
-    filePath: 'view/log/log.vue',
-    inNav: true,
-    icon: 'iconfont icon-rizhiguanli',
-    order: 2,
-    permission: ['查询所有日志'],
   },
   {
     title: '个人中心',
@@ -48,6 +37,17 @@ let homeRouter = [
   // bookConfig,
   repairOrder,
   adminConfig,
+  {
+    title: '日志管理',
+    type: 'view',
+    name: Symbol('log'),
+    route: '/log',
+    filePath: 'view/log/log.vue',
+    inNav: true,
+    icon: 'iconfont icon-rizhiguanli',
+    order: null,
+    permission: ['查询所有日志'],
+  },
 ]
 
 // 接入插件
