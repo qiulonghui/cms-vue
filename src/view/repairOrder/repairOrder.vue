@@ -50,7 +50,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="handleClose">取 消</el-button>
-          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+          <el-button type="primary" @click="handleStateOk">确 定</el-button>
         </span>
       </template>
     </el-dialog>
@@ -125,8 +125,14 @@ export default {
     }
 
     const handleClose = () => {
-      stateform.state = 'pending'
       dialogVisible.value = false
+      // stateform.state = null
+    }
+
+    const handleStateOk = async () => {
+      const res = await orderRepairApi.updateOrderState(props.editId, { state: stateform.state })
+      ElMessage.success(`${res.message}`)
+      handleClose()
     }
 
     const back = () => {
@@ -140,6 +146,7 @@ export default {
       rules,
       resetForm,
       submitForm,
+      handleStateOk,
       dialogVisible,
       stateform,
       handleClose,

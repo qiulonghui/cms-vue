@@ -27,6 +27,11 @@ class OrderRepair {
     return res
   }
 
+  async updateOrderState(id, data) {
+    const res = await put(`v1/orderRepair/${id}/state`, data)
+    return res
+  }
+
   async deleteOrder(id) {
     const res = await _delete(`v1/orderRepair/${id}`)
     return res

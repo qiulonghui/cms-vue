@@ -11,7 +11,7 @@
         <el-table-column prop="name" label="报修人"></el-table-column>
         <el-table-column prop="phone" label="报修人电话"></el-table-column>
         <el-table-column prop="depart" label="报修科室"></el-table-column>
-        <el-table-column prop="address" label="维修地点"></el-table-column>
+        <el-table-column prop="address" label="维修地点" show-overflow-tooltip></el-table-column>
         <el-table-column prop="desc" label="问题说明" show-overflow-tooltip></el-table-column>
         <el-table-column prop="state" label="状态" show-overflow-tooltip>
           <template #default="scope">
@@ -101,7 +101,7 @@ export default {
     }
 
     const handleDelete = id => {
-      ElMessageBox.confirm('此操作将永久删除该图书, 是否继续?', '提示', {
+      ElMessageBox.confirm('确认删除这个工单, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
