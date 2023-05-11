@@ -10,7 +10,7 @@
       <el-dropdown-menu>
         <div class="notify-title">
           <p>消息提醒</p>
-          <p class="button" @click="readAll">全部已读</p>
+          <!-- <p class="button" @click="readAll">全部已读</p> -->
         </div>
         <div class="content" :style="{ 'min-height': height + 'px', 'max-height': height + 'px' }">
           <div
@@ -37,9 +37,9 @@
             </slot>
           </el-dropdown-item>
         </div>
-        <div class="notify-footer">
+        <!-- <div class="notify-footer">
           <p class="viewAll" @click="viewAll">查看全部 &gt;</p>
-        </div>
+        </div> -->
       </el-dropdown-menu>
     </template>
   </el-dropdown>
