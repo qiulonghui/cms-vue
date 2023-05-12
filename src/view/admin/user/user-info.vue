@@ -11,16 +11,16 @@
       @submit.prevent
     >
       <el-form-item label="用户名" prop="username">
-        <el-input clearable v-model="userInfo.username" :disabled="isEdited"></el-input>
+        <el-input clearable v-model="userInfo.username" :disabled="isEdited"  placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label="邮箱" prop="email">
-        <el-input clearable :disabled="isEdited" v-model="userInfo.email" auto-complete="new-password"></el-input>
+        <el-input clearable :disabled="isEdited" v-model="userInfo.email" auto-complete="new-password"  placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item v-if="pageType === 'add'" label="密码" prop="password">
-        <el-input clearable type="password" v-model="userInfo.password" auto-complete="new-password"></el-input>
+        <el-input clearable type="password" v-model="userInfo.password" auto-complete="new-password"  placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item v-if="pageType === 'add'" label="确认密码" prop="confirmPassword" label-position="top">
-        <el-input clearable type="password" autocomplete="off" v-model="userInfo.confirmPassword"></el-input>
+        <el-input clearable type="password" autocomplete="off" v-model="userInfo.confirmPassword"  placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item v-if="pageType !== 'password'" label="选择分组">
         <el-checkbox-group v-model="userInfo.groupIds" size="small" style="transform: translateY(5px)">

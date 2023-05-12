@@ -2,7 +2,7 @@
   <div class="container">
     <div class="title" v-if="!editId">新建维修工单</div>
     <div class="title" v-else>
-      <span>编辑维修工单 <el-button type="primary" @click="dialogVisible = true">修改工单状态</el-button></span>
+      <span>编辑维修工单 <el-button type="primary" @click="dialogVisible = true" v-permission="'修改维修工单状态'">修改工单状态</el-button></span>
       <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
     </div>
 
